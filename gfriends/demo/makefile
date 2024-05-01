@@ -12,4 +12,4 @@ run:
 
 .PHONY: clean
 clean:
-	go clean
+	rm -f ${packagename}

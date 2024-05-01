@@ -3,13 +3,17 @@ module github.com/forlifeproj/application/gfriends/http_gateway
 go 1.20
 
 require (
-	github.com/forlifeproj/msf/client v0.0.0-20240428132155-e9d714e2f9e6
-	github.com/forlifeproj/msf/consul v0.0.0-20240428132155-e9d714e2f9e6
+	github.com/forlifeproj/msf/client v0.0.0-20240501140345-228093f77c71
+	github.com/forlifeproj/msf/consul v0.0.0-20240501013049-9cb925a8e8c7
 	github.com/forlifeproj/msf/log v0.0.0-20240428132155-e9d714e2f9e6
+	github.com/forlifeproj/protocol/gfriends/json/demo v0.0.0-20240429040528-15a18e6116a2
 	github.com/gin-gonic/gin v1.9.1
-	github.com/rpcxio/rpcx-examples v1.1.6
+	github.com/smallnest/rpcx v1.8.30
 	github.com/unrolled/secure v1.14.0
 )
+
+// github.com/forlifeproj/msf/client v0.0.0-20240501013049-9cb925a8e8c7
+require github.com/forlifeproj/msf/config v0.0.0-20240501013049-9cb925a8e8c7
 
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
@@ -24,7 +28,6 @@ require (
 	github.com/edwingeng/doublejump v1.0.1 // indirect
 	github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a // indirect
 	github.com/fatih/color v1.16.0 // indirect
-	github.com/forlifeproj/msf/config v0.0.0-20240428130908-1c45b79d112c // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-ping/ping v1.1.0 // indirect
@@ -68,7 +71,6 @@ require (
 	github.com/rpcxio/rpcx-consul v0.0.0-20230904043151-f6175fbe2f72 // indirect
 	github.com/rubyist/circuitbreaker v2.2.1+incompatible // indirect
 	github.com/smallnest/quick v0.1.0 // indirect
-	github.com/smallnest/rpcx v1.8.30 // indirect
 	github.com/templexxx/cpufeat v0.0.0-20180724012125-cef66df7f161 // indirect
 	github.com/templexxx/xor v0.0.0-20191217153810-f85b25db303b // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect

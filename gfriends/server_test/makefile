@@ -1,4 +1,4 @@
-packagename=http_gateway
+packagename=server_test
 
 
 .PHONY: build

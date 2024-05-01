@@ -1,63 +1,67 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"fmt"
-	"log"
-	"net/http"
-	"time"
 
+	conf "github.com/forlifeproj/application/gfriends/http_gateway/config"
+	"github.com/forlifeproj/application/gfriends/http_gateway/router"
 	"github.com/forlifeproj/msf/consul"
-	"github.com/gin-gonic/gin"
-	"github.com/unrolled/secure"
-
-	flcli "github.com/forlifeproj/msf/client"
 
 	fllog "github.com/forlifeproj/msf/log"
-
-	example "github.com/rpcxio/rpcx-examples"
 )
 
 var (
-	consulAddr = flag.String("consulAddr", "localhost:8500", "consul address")
-	basePath   = flag.String("base", "/rpcx_test", "prefix path")
+	cfg string
 )
+
+func init() {
+	flag.StringVar(&cfg, "c", "../conf/http_gateway.toml", "config file path, default ../conf/http_gateway.toml")
+}
 
 // 测试证书生成工具：https://keymanager.org/#
 // 中间件对应的包：github.com/unrolled/secure
 func main() {
 	flag.Parse()
 	// log init
-	fllog.Init("../conf/http_gateway.toml")
+	fllog.Init(cfg)
 	// consul init
-	consul.Init("../conf/http_gateway.toml")
-	fllog.Log().Debug("consulAddr=", consul.GetConsulAddr())
+	consul.Init(cfg)
+	fllog.Log().Debug(fmt.Sprintf("consulAddr=%s consulEnvir=%s", consul.GetConsulAddr(), consul.GetConsulEnvironment()))
+	// config init
+	conf.Init(cfg)
+	
+	// r := gin.Default()
+	// r.Use(httpsHandler()) //https对应的中间件
+	// r.GET("/svr/mul", func(c *gin.Context) {
+	// 	testMulRpcCall()
+	// 	fmt.Println(c.Request.Host)
+	// 	c.JSON(http.StatusOK, gin.H{
+	// 		"code":   http.StatusOK,
+	// 		"result": "test mul rpc succ",
+	// 	})
+	// })
 
-	r := gin.Default()
-	r.Use(httpsHandler()) //https对应的中间件
-	r.GET("/https_mul", func(c *gin.Context) {
-		testMulRpcCall()
-		fmt.Println(c.Request.Host)
-		c.JSON(http.StatusOK, gin.H{
-			"code":   http.StatusOK,
-			"result": "test mul rpc succ",
-		})
-	})
+	// r.GET("/svr/add", func(c *gin.Context) {
+	// 	testAddRpcCall()
+	// 	fmt.Println(c.Request.Host)
+	// 	c.JSON(http.StatusOK, gin.H{
+	// 		"code":   http.StatusOK,
+	// 		"result": "test add rpc succ",
+	// 	})
+	// })
 
-	r.GET("/https_add", func(c *gin.Context) {
-		testAddRpcCall()
-		fmt.Println(c.Request.Host)
-		c.JSON(http.StatusOK, gin.H{
-			"code":   http.StatusOK,
-			"result": "test add rpc succ",
-		})
-	})
+	r, err := router.RegisterRouters()
+	if err != nil {
+		fllog.Log().Error(fmt.Sprintf("register routers failed. err:%+v", err))
+		return
+	}
 
 	path := "./CA/"                                  //证书的路径
 	r.RunTLS(":18080", path+"ca.crt", path+"ca.key") //开启HTTPS服务
 }
 
+/*
 func httpsHandler() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		secureMiddle := secure.New(secure.Options{
@@ -88,50 +92,31 @@ func httpsHandler() gin.HandlerFunc {
 
 func testMulRpcCall() {
 
-	args := &example.Args{
+	args := &demo.Args{
 		A: 10,
 		B: 20,
 	}
-
-	reply := &example.Reply{}
+	reply := &demo.Reply{}
 
 	callDesc := flcli.CallDesc{
-		ServiceName: "/rpcx_test.Arith.Mul",
+		ServiceName: "gfriends.Arith.Mul",
 		Timeout:     time.Second,
 	}
 	flC := flcli.NewClient(callDesc)
 	defer flC.Close()
 
 	flC.DoRequest(context.Background(), args, reply)
-
-	// d, _ := cclient.NewConsulDiscovery(*basePath, "Arith", []string{*consulAddr}, nil)
-	// xclient := client.NewXClient("Arith", client.Failtry, client.RandomSelect, d, client.DefaultOption)
-	// defer xclient.Close()
-
-	// err := xclient.Call(context.Background(), "Mul", args, reply)
-	// if err != nil {
-	// 	fmt.Printf("ERROR failed to call: %v", err)
-	// 	log.Printf("ERROR failed to call: %v", err)
-	// }
-
-	log.Printf("%d * %d = %d", args.A, args.B, reply.C)
-	fmt.Printf("%d * %d = %d", args.A, args.B, reply.C)
+	fllog.Log().Debug(fmt.Sprintf("%d * %d = %d", args.A, args.B, reply.C))
 }
 
 func testAddRpcCall() {
-	// d, _ := cclient.NewConsulDiscovery(*basePath, "Demo", []string{*consulAddr}, nil)
-	// xclient := client.NewXClient("Demo", client.Failtry, client.RandomSelect, d, client.DefaultOption)
-	// defer xclient.Close()
-
-	args := &example.Args{
+	args := &demo.Args{
 		A: 10,
 		B: 20,
 	}
-
-	reply := &example.Reply{}
-
+	reply := &demo.Reply{}
 	callDesc := flcli.CallDesc{
-		ServiceName: "/rpcx_test.Demo.Add",
+		ServiceName: "gfriends.Demo.Add",
 		Timeout:     time.Second,
 	}
 	flC := flcli.NewClient(callDesc)
@@ -139,12 +124,6 @@ func testAddRpcCall() {
 
 	flC.DoRequest(context.Background(), args, reply)
 
-	// err := xclient.Call(context.Background(), "Add", args, reply)
-	// if err != nil {
-	// 	fmt.Printf("ERROR failed to call: %v", err)
-	// 	log.Printf("ERROR failed to call: %v", err)
-	// }
-
-	log.Printf("%d * %d = %d", args.A, args.B, reply.C)
-	fmt.Printf("%d * %d = %d", args.A, args.B, reply.C)
+	fllog.Log().Debug(fmt.Sprintf("%d + %d = %d", args.A, args.B, reply.C))
 }
+*/

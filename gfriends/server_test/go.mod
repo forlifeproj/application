@@ -3,12 +3,6 @@ module github.com/forlifeproj/application/gfriends/server_test
 go 1.20
 
 require (
-	github.com/forlifeproj/msf/log v0.0.0-20240501140345-228093f77c71
-	github.com/forlifeproj/msf/server v0.0.0-20240501140345-228093f77c71
-	github.com/forlifeproj/protocol/gfriends/json/demo v0.0.0-20240502042228-eb1c31b79e05
-)
-
-require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/akutz/memconn v0.1.0 // indirect
 	github.com/alitto/pond v1.8.3 // indirect
@@ -17,6 +11,7 @@ require (
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/forlifeproj/msf/config v0.0.0-20240501004236-6fba10dc41c8 // indirect
 	github.com/forlifeproj/msf/consul v0.0.0-20240501004236-6fba10dc41c8 // indirect
+	github.com/forlifeproj/protocol/gfriends/json/demo v0.0.0-20240502075809-88d8be1fbcc8
 	github.com/go-echarts/go-echarts/v2 v2.3.2 // indirect
 	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
 	github.com/godzie44/go-uring v0.0.0-20220926161041-69611e8b13d5 // indirect
@@ -72,4 +67,11 @@ require (
 	golang.org/x/tools v0.9.1 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
+)
+
+require (
+	github.com/forlifeproj/msf/log v0.0.0-20240501140345-228093f77c71
+	github.com/forlifeproj/msf/server v0.0.0-20240501140345-228093f77c71
+	github.com/forlifeproj/protocol/gfriends/json v0.0.0-20240502075809-88d8be1fbcc8
+	github.com/forlifeproj/protocol/gfriends/json/login v0.0.0-20240502080740-fef904746bd8
 )

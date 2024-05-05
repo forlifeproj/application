@@ -5,7 +5,15 @@ go 1.20
 require (
 	github.com/forlifeproj/msf/log v0.0.0-20240501010313-0e6eb9343eae
 	github.com/forlifeproj/msf/server v0.0.0-20240501010313-0e6eb9343eae
-	github.com/forlifeproj/protocol/gfriends/json/demo v0.0.0-20240429040528-15a18e6116a2
+	github.com/forlifeproj/protocol/gfriends/json/demo v0.0.0-20240502042228-eb1c31b79e05
+	gorm.io/driver/mysql v1.5.6
+	gorm.io/gorm v1.25.10
+)
+
+require (
+	github.com/go-sql-driver/mysql v1.7.0 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 )
 
 require (
@@ -17,6 +25,7 @@ require (
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/forlifeproj/msf/config v0.0.0-20240501004236-6fba10dc41c8 // indirect
 	github.com/forlifeproj/msf/consul v0.0.0-20240501004236-6fba10dc41c8 // indirect
+	//github.com/forlifeproj/protocol/gfriends/json
 	github.com/go-echarts/go-echarts/v2 v2.3.2 // indirect
 	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
 	github.com/godzie44/go-uring v0.0.0-20220926161041-69611e8b13d5 // indirect
@@ -49,7 +58,7 @@ require (
 	github.com/rpcxio/rpcx-consul v0.0.0-20230904043151-f6175fbe2f72 // indirect
 	github.com/rs/cors v1.8.3 // indirect
 	github.com/smallnest/quick v0.1.0 // indirect
-	github.com/smallnest/rpcx v1.8.30 // indirect
+	github.com/smallnest/rpcx v1.8.30
 	github.com/smallnest/statsview v0.0.0-20231119085602-10700f9abec4 // indirect
 	github.com/soheilhy/cmux v0.1.5 // indirect
 	github.com/templexxx/cpufeat v0.0.0-20180724012125-cef66df7f161 // indirect

@@ -56,8 +56,12 @@ github.com/forlifeproj/msf/log v0.0.0-20240501140345-228093f77c71 h1:H3VSs1RIke1
 github.com/forlifeproj/msf/log v0.0.0-20240501140345-228093f77c71/go.mod h1:qtSGDj8spBlovP/OJJlvAcwOAT8MgXiZZR3pGrFqoxs=
 github.com/forlifeproj/msf/server v0.0.0-20240501140345-228093f77c71 h1:WeGpMqnAgKS24yPnQfVkaq24TJtDBeTdzPen5jeV5/E=
 github.com/forlifeproj/msf/server v0.0.0-20240501140345-228093f77c71/go.mod h1:nROOP6yffEupDW8dQ489CFlwiqbWRGULUlG7V8VVMkg=
-github.com/forlifeproj/protocol/gfriends/json/demo v0.0.0-20240502042228-eb1c31b79e05 h1:64EYQn2pk4Qwm7P7Ne2Y06yFkRBxHWU14pr2Ud2ldkw=
-github.com/forlifeproj/protocol/gfriends/json/demo v0.0.0-20240502042228-eb1c31b79e05/go.mod h1:09oxzJHSX/RAyXL36QCJ5GDk3AReMFXuHUqEtFDwtY8=
+github.com/forlifeproj/protocol/gfriends/json v0.0.0-20240502075809-88d8be1fbcc8 h1:WY4S6bn2vpiKNxl012VVrZ5x+5SdSjatay6PZEkiim8=
+github.com/forlifeproj/protocol/gfriends/json v0.0.0-20240502075809-88d8be1fbcc8/go.mod h1:f36YKvIi+5dqWRFqtfOB+4AvWvWS1lDKuPI+KO4PBqs=
+github.com/forlifeproj/protocol/gfriends/json/demo v0.0.0-20240502075809-88d8be1fbcc8 h1:HJ93clOcphsvZM2sHPR8++W46MFUcZdQwabYefT8RQU=
+github.com/forlifeproj/protocol/gfriends/json/demo v0.0.0-20240502075809-88d8be1fbcc8/go.mod h1:09oxzJHSX/RAyXL36QCJ5GDk3AReMFXuHUqEtFDwtY8=
+github.com/forlifeproj/protocol/gfriends/json/login v0.0.0-20240502080740-fef904746bd8 h1:QD3MY088MnBcUVXWXpd692dkg/i/FbbHRXQplmscbfs=
+github.com/forlifeproj/protocol/gfriends/json/login v0.0.0-20240502080740-fef904746bd8/go.mod h1:CsPbWfvaF3atwJCPDAvoG6NEOAHnQUUGxVXpj6CfMCs=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/fsnotify/fsnotify v1.4.9/go.mod h1:znqG4EE+3YCdAaPaxE2ZRY/06pZUdp0tY4IgpuI1SZQ=
 github.com/go-echarts/go-echarts/v2 v2.3.2 h1:imRxqF5sLtEPBsv5HGwz9KklNuwCo0fTITZ31mrgfzo=

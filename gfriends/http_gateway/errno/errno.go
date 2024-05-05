@@ -18,11 +18,12 @@ func (err *Errno) Error() string {
 }
 
 const (
-	FLSvrSucc         = 0
-	FLSvrFail         = 1000
-	FLInvalidReq      = 1001
-	FLTransferReqFail = 1002
-	FLInvalidUrl      = 1003
+	FLSvrSucc    = 0
+	FLSvrFail    = 1000
+	FLInvalidReq = 1001
+	//http_gateway
+	FLTransferReqFail = 2001
+	FLInvalidUrl      = 2002
 )
 
 var (

@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	conf "github.com/forlifeproj/application/gfriends/login/config"
-	"github.com/smallnest/rpcx/log"
 	fllog "github.com/forlifeproj/msf/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -33,7 +32,7 @@ func Init() error {
 	sqlDB.SetMaxIdleConns(conf.GConf.DB.MaxIdol)
 
 	gormDb = db
-	fllog.Log().Error(fmt.Sprintf("init db success, url: %s, maxopen=%d, maxidle=%d", 
-		url, conf.GConf.DB.MaxOpen, conf.GConf.DB.MaxIdol)）
+	fllog.Log().Error(fmt.Sprintf("init db success, url: %s, maxopen=%d, maxidle=%d",
+		url, conf.GConf.DB.MaxOpen, conf.GConf.DB.MaxIdol))
 	return nil
 }

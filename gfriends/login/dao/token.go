@@ -5,7 +5,7 @@ const (
 )
 
 type LoginToken struct {
-	Token              string `gorm:"column:token"`
+	Token              string `gorm:"column:token;primaryKey"`
 	Uid                int64  `gorm:"column:uid"`
 	OpenId             string `gorm:"column:openid"`
 	UnionId            string `gorm:"column:unionid"`
@@ -18,7 +18,8 @@ type LoginToken struct {
 	RefreshTokenExpire int64  `gorm:"column:refresh_token_expire"`
 	Status             int    `gorm:"column:status"`
 	ExpireTime         int64  `gorm:"column:expire_time"`
-	CreateTIme         int64  `gorm:"column:create_time"`
+	UpdateTime         int64  `gorm:"column:update_time"`
+	CreateTime         int64  `gorm:"column:create_time"`
 }
 
 func AddLoginToken(record *LoginToken) error {
@@ -29,7 +30,7 @@ func AddLoginToken(record *LoginToken) error {
 func GetLoginToken(token string) (*LoginToken, error) {
 	var loginToken LoginToken
 	result := gormDb.Table(LoginTokenTable).First(&loginToken).Where("token = ?", token)
-	return &order, result.Error
+	return &loginToken, result.Error
 }
 
 // func GetOrderList(uid int64, lastOrderId string, pageSize int) ([]OrderStorage, error) {

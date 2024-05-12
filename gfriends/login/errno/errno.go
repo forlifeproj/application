@@ -30,6 +30,12 @@ const (
 	FLInvalidUrl      = 2002
 	//login
 	LoginAuthCodeFail = 3001
+	CreateTicketFail  = 3002
+	InvalidTicket     = 3003
+	AuthTokenFail     = 3004
+
+	//account
+	GetUidFail = 4001
 )
 
 var (
@@ -45,6 +51,12 @@ var (
 	ErrInvalidUrl  = &Errno{Code: FLInvalidUrl, Message: "无效URL"}
 	// 登录服务
 	ErrLoginAuthFail = &Errno{Code: LoginAuthCodeFail, Message: "第三方授权登录失败"}
+	ErrCreateTicket  = &Errno{Code: CreateTicketFail, Message: "创建票据失败"}
+	ErrInvalidTicket = &Errno{Code: InvalidTicket, Message: "无效票据"}
+	ErrAuthToken     = &Errno{Code: AuthTokenFail, Message: "鉴权失败"}
+
+	// 账号服务
+	ErrGetUidFail = &Errno{Code: GetUidFail, Message: "查询UID失败"}
 )
 
 func DecodeErr(err error) (int, string) {

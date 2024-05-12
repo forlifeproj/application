@@ -35,8 +35,8 @@ func GetAccount(uid int64) (*Account, error) {
 }
 
 type OpenID struct {
-	OpenId     string `gorm:"column:openid"`
-	OpenType   int    `gorm:"column:open_type"`
+	OpenId     string `gorm:"column:openid;primaryKey"`
+	OpenType   int    `gorm:"column:open_type;primaryKey"`
 	Uid        int64  `gorm:"column:uid"`
 	UpdateTime int64  `gorm:"column:update_time"`
 	CreateTime int64  `gorm:"column:create_time"`
@@ -54,8 +54,8 @@ func GetOpenID(openId string, openType int) (*OpenID, error) {
 }
 
 type UnionID struct {
-	UnionId    string `gorm:"column:unionid"`
-	OpenType   int    `gorm:"column:open_type"`
+	UnionId    string `gorm:"column:unionid;primaryKey"`
+	OpenType   int    `gorm:"column:open_type;primaryKey"`
 	Uid        int64  `gorm:"column:uid"`
 	UpdateTime int64  `gorm:"column:update_time"`
 	CreateTime int64  `gorm:"column:create_time"`

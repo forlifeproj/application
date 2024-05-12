@@ -14,7 +14,7 @@ ALTER TABLE `table_account` AUTO_INCREMENT = 1000000;
 CREATE TABLE `table_openid` (
     `openid` varchar(255) COLLATE utf8_bin NOT NULL,
     `open_type` int(11) NOT NULL DEFAULT '0', 
-    `uid` bigint(20) NOT NULL  '0',
+    `uid` bigint(20) NOT NULL DEFAULT '0',
     `update_time` bigint(20) NOT NULL DEFAULT '0',
     `create_time` bigint(20) NOT NULL DEFAULT '0',
     PRIMARY KEY (`openid`,`open_type`)
@@ -24,7 +24,7 @@ CREATE TABLE `table_openid` (
 CREATE TABLE `table_unionid` (
     `unionid` varchar(255) COLLATE utf8_bin NOT NULL,
     `open_type` int(11) NOT NULL DEFAULT '0', 
-    `uid` bigint(20) NOT NULL  '0',
+    `uid` bigint(20) NOT NULL DEFAULT '0',
     `update_time` bigint(20) NOT NULL DEFAULT '0',
     `create_time` bigint(20) NOT NULL DEFAULT '0',
     PRIMARY KEY (`unionid`,`open_type`)

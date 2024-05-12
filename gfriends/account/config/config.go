@@ -28,5 +28,6 @@ func Init(cfg string) error {
 	}
 
 	fllog.Log().Debug(fmt.Sprintf("load config succ cfg:%s Conf:%+v", cfg, GConf))
+
 	return nil
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/forlifeproj/application/gfriends/account/errno"
 	fllog "github.com/forlifeproj/msf/log"
 	"github.com/forlifeproj/protocol/gfriends/json/account"
+	"gorm.io/gorm"
 )
 
 func GetUid(ctx context.Context, req *account.GetUidReq, rsp *account.GetUidRsp) error {
@@ -37,7 +38,7 @@ func GetUid(ctx context.Context, req *account.GetUidReq, rsp *account.GetUidRsp)
 func getUidByOpenidUnionid(strOpenId, strUnionId string, openType int) (int64, error) {
 	if len(strOpenId) > 0 {
 		openID, err := dao.GetOpenID(strOpenId, openType)
-		if err != nil {
+		if err != nil && err != gorm.ErrRecordNotFound {
 			fllog.Log().Error(fmt.Sprintf("get OpenID from db failed. err:%+v openId:%s openType:%d",
 				err, strOpenId, openType))
 			return 0, errno.ErrDBQueryail
@@ -49,7 +50,7 @@ func getUidByOpenidUnionid(strOpenId, strUnionId string, openType int) (int64, e
 
 	if len(strUnionId) > 0 {
 		unionID, err := dao.GetUnionID(strUnionId, openType)
-		if err != nil {
+		if err != nil && err != gorm.ErrRecordNotFound {
 			fllog.Log().Error(fmt.Sprintf("get UnionID from db failed. err:%+v unionId:%s openType:%d",
 				err, strUnionId, openType))
 			return 0, errno.ErrDBQueryail

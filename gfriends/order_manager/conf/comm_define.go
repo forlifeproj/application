@@ -7,6 +7,9 @@ const (
 )
 
 var GConf = struct {
+	Global struct {
+		Env string `default:"exp"`
+	}
 	DB struct {
 		User     string
 		PassWord string
@@ -22,5 +25,9 @@ var GConf = struct {
 		MchCertificateSerialNumber string `default:"3C65C96036169AD7E05EA15DB66ADDF6B8E54E5C"`    // 商户证书序列号
 		MchAPIv3Key                string `default:"B12F3E0641E3149469B661BAF693B3D9"`            // 商户APIv3密钥
 		WxCallbackUrl              string `default:"http://forlifejj.cn/svr/proc/wxpay_callback"` // 支付结果异步通知地址
+	}
+	GroupConf struct {
+		FriendGroupUrl string
+		NewsGroupUrl   string
 	}
 }{}

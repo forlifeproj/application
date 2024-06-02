@@ -54,12 +54,13 @@ func QueryOrderStatus(ctx context.Context, req *order_manager.QueryOrderStatusRe
 
 	rsp.Status = wx_pay.WxPayStatus_Suc
 	rsp.NeedPoll = 0
-	groupInfo := order_manager.GroupInfo{
-		GroupId:     "1",
-		GroupName:   "密友交友群",
-		GroupQRCode: "xxx", //TODO
+
+	groupInfo := GetGroupInfoById(order.GroupID)
+	if groupInfo == nil {
+		fllog.Log().Errorf("invalid group id:%s", order.GroupID)
+		return nil
 	}
-	bizInfo, _ := json.Marshal(&groupInfo)
+	bizInfo, _ := json.Marshal(groupInfo)
 	rsp.BizInfo = string(bizInfo)
 	fllog.Log().Debugf("req:%+v, rsp:%+v", req, rsp)
 	return nil

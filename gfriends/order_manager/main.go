@@ -31,6 +31,9 @@ func main() {
 		return
 	}
 
+	//
+	service.InitGroupList()
+
 	// wx pay init
 	service.InitWxPayClient()
 

@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/forlifeproj/application/gfriends/order_manager/conf"
@@ -41,7 +42,14 @@ func InitWxPayClient() error {
 }
 
 func WxPrePay(ctx context.Context, req *wx_pay.WxPrePayReq, rsp *wx_pay.WxPrePayRsp) error {
-	//TODO check bizInfo
+	groupInfo := GetGroupInfoById(req.GroupId)
+	if groupInfo == nil {
+		fllog.Log().Errorf("invalid group id:%s", req.GroupId)
+		return fmt.Errorf("invalid param")
+	} else if req.Amount != int64(groupInfo.Price) && IsProdEnv() {
+		fllog.Log().Errorf("invalid price:%d", req.Amount)
+		return fmt.Errorf("invalid param")
+	}
 
 	svc := jsapi.JsapiApiService{Client: wxPayClient}
 	// 得到prepay_id，以及调起支付所需的参数和签名

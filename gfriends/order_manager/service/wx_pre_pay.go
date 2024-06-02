@@ -42,6 +42,11 @@ func InitWxPayClient() error {
 }
 
 func WxPrePay(ctx context.Context, req *wx_pay.WxPrePayReq, rsp *wx_pay.WxPrePayRsp) error {
+	if !checkOrderId(req.OrderId) {
+		fllog.Log().Errorf("orderId invalid, req:%+v", req)
+		return fmt.Errorf("非法的订单id")
+	}
+
 	groupInfo := GetGroupInfoById(req.GroupId)
 	if groupInfo == nil {
 		fllog.Log().Errorf("invalid group id:%s", req.GroupId)

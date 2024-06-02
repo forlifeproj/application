@@ -4,6 +4,8 @@ const (
 	WxTradeSuccess         = "SUCCESS"
 	HTTP_STATUS_CODE       = "http_status_code"
 	HTTP_SERVER_ERROR_CODE = "500"
+	EncryptKey             = "6baa188dc4a01374"
+	OrderIdPrefix          = "forlife@2024"
 )
 
 var GConf = struct {

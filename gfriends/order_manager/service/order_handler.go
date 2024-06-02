@@ -1,24 +1,34 @@
 package service
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"math/rand"
+	"strings"
+
+	math_rand "math/rand"
 	"time"
+
+	"crypto/aes"
+	"crypto/cipher"
+	"encoding/base64"
 
 	fllog "github.com/forlifeproj/msf/log"
 	"gorm.io/gorm"
 
+	"github.com/forlifeproj/application/gfriends/order_manager/conf"
 	"github.com/forlifeproj/application/gfriends/order_manager/dao"
 	"github.com/forlifeproj/protocol/gfriends/json/order_manager"
 	"github.com/forlifeproj/protocol/gfriends/json/wx_pay"
 )
 
 func GenerateOrderId(ctx context.Context, req *order_manager.GenerateOrderIdReq, rsp *order_manager.GenerateOrderIdRsp) error {
-	rsp.OrderId = fmt.Sprintf("%d%d", time.Now().UnixNano(), rand.Intn(10000))
+	rsp.OrderId = getEncryptOrderId()
 	fllog.Log().Debug("req=", req, "rsp=", rsp)
+	//debug
+	//checkOrderId(rsp.OrderId)
 	return nil
 }
 
@@ -26,6 +36,12 @@ func QueryOrderStatus(ctx context.Context, req *order_manager.QueryOrderStatusRe
 	rsp.MaxPollTimes = 60
 	rsp.PollInterval = 1000
 	rsp.NeedPoll = 1
+
+	if !checkOrderId(req.OrderId) {
+		fllog.Log().Errorf("orderId invalid, req:%+v", req)
+		rsp.NeedPoll = 0
+		return fmt.Errorf("非法的订单id")
+	}
 
 	order, err := dao.GetOrderRecord(req.OrderId)
 	if err != nil {
@@ -90,4 +106,75 @@ func GetOrderList(ctx context.Context, req *order_manager.GetOrderListReq, rsp *
 
 	fllog.Log().Debugf("req:%+v, rsp:%+v", req, rsp)
 	return nil
+}
+
+func getEncryptOrderId() string {
+	orderId := fmt.Sprintf("%s_%d%d", conf.OrderIdPrefix, time.Now().Unix(), math_rand.Intn(10000))
+	ciphertext, err := AesEncrypt([]byte(conf.EncryptKey), []byte(orderId))
+	if err != nil {
+		fllog.Log().Errorf("err:%v", err)
+	}
+	base64str := base64.StdEncoding.EncodeToString(ciphertext)
+	fllog.Log().Debugf("orderId:%s, encryptId:%s", orderId, base64str)
+	return base64str
+}
+
+func checkOrderId(orderId string) bool {
+	base64Decode, err := base64.StdEncoding.DecodeString(orderId)
+	if err != nil {
+		fllog.Log().Errorf("err:%v", err)
+		return false
+	}
+
+	decryptedText, err := AesDecrypt([]byte(conf.EncryptKey), base64Decode)
+	if err != nil {
+		fllog.Log().Errorf("err:%v", err)
+		return false
+	}
+	if !strings.HasPrefix(string(decryptedText), conf.OrderIdPrefix) {
+		fllog.Log().Errorf("decrypt order id [%s] invalid", string(decryptedText))
+		return false
+	}
+	fllog.Log().Debugf("orderId %s check pass", orderId)
+	return true
+}
+
+func PKCS7Padding(ciphertext []byte, blockSize int) []byte {
+	padding := blockSize - len(ciphertext)%blockSize
+	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
+	return append(ciphertext, padtext...)
+}
+
+func PKCS7UnPadding(origData []byte) []byte {
+	length := len(origData)
+	unpadding := int(origData[length-1])
+	return origData[:(length - unpadding)]
+}
+
+// AES加密,CBC
+func AesEncrypt(key, origData []byte) ([]byte, error) {
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
+	blockSize := block.BlockSize()
+	origData = PKCS7Padding(origData, blockSize)
+	blockMode := cipher.NewCBCEncrypter(block, key[:blockSize])
+	crypted := make([]byte, len(origData))
+	blockMode.CryptBlocks(crypted, origData)
+	return crypted, nil
+}
+
+// AES解密
+func AesDecrypt(key, crypted []byte) ([]byte, error) {
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
+	blockSize := block.BlockSize()
+	blockMode := cipher.NewCBCDecrypter(block, key[:blockSize])
+	origData := make([]byte, len(crypted))
+	blockMode.CryptBlocks(origData, crypted)
+	origData = PKCS7UnPadding(origData)
+	return origData, nil
 }

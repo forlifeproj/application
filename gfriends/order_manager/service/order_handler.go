@@ -2,17 +2,22 @@ package service
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
+	"math/rand"
 	"time"
 
 	fllog "github.com/forlifeproj/msf/log"
+	"gorm.io/gorm"
 
 	"github.com/forlifeproj/application/gfriends/order_manager/dao"
 	"github.com/forlifeproj/protocol/gfriends/json/order_manager"
+	"github.com/forlifeproj/protocol/gfriends/json/wx_pay"
 )
 
 func GenerateOrderId(ctx context.Context, req *order_manager.GenerateOrderIdReq, rsp *order_manager.GenerateOrderIdRsp) error {
-	rsp.OrderId = fmt.Sprintf("%d", time.Now().UnixNano())
+	rsp.OrderId = fmt.Sprintf("%d%d", time.Now().UnixNano(), rand.Intn(10000))
 	fllog.Log().Debug("req=", req, "rsp=", rsp)
 	return nil
 }
@@ -21,21 +26,41 @@ func QueryOrderStatus(ctx context.Context, req *order_manager.QueryOrderStatusRe
 	rsp.MaxPollTimes = 60
 	rsp.PollInterval = 1000
 	rsp.NeedPoll = 1
-	defer func() {
-		if rsp.Status == 1 {
-			rsp.NeedPoll = 0
-			// TODO 给bizInfo赋值
-		}
-	}()
+
 	order, err := dao.GetOrderRecord(req.OrderId)
 	if err != nil {
 		fllog.Log().Errorf("err:%v, req:%+v", err, req)
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			rsp.NeedPoll = 0
+			return nil
+		}
 		return fmt.Errorf("query db error")
 	}
-	if order == nil {
+	fllog.Log().Debugf("order:%+v", order)
+
+	// 等待支付回调中
+	if order.Status == wx_pay.WxPayStatus_UnFinished {
+		fllog.Log().Debugf("order not finished, orderId:%s", req.OrderId)
+		rsp.NeedPoll = 1
 		return nil
 	}
-	rsp.Status = 1
+
+	// 支付失败
+	if order.Status == wx_pay.WxPayStatus_Fail {
+		fllog.Log().Debugf("order failed, orderId:%s", req.OrderId)
+		rsp.NeedPoll = 0
+		return nil
+	}
+
+	rsp.Status = wx_pay.WxPayStatus_Suc
+	rsp.NeedPoll = 0
+	groupInfo := order_manager.GroupInfo{
+		GroupId:     "1",
+		GroupName:   "密友交友群",
+		GroupQRCode: "xxx", //TODO
+	}
+	bizInfo, _ := json.Marshal(&groupInfo)
+	rsp.BizInfo = string(bizInfo)
 	fllog.Log().Debugf("req:%+v, rsp:%+v", req, rsp)
 	return nil
 }

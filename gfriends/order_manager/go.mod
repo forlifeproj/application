@@ -2,10 +2,21 @@ module github.com/forlifeproj/application/gfriends/order_manager
 
 go 1.20
 
+//require github.com/forlifeproj/protocol/gfriends/json v0.0.0-20240502075809-88d8be1fbcc8 // indirect
+
+replace (
+	github.com/forlifeproj/protocol/gfriends/json => ../../../protocol/gfriends/json
+	github.com/forlifeproj/protocol/gfriends/json/wx_pay => ../../../protocol/gfriends/json/wx_pay
+	github.com/forlifeproj/protocol/gfriends/json/order_manager => ../../../protocol/gfriends/json/order_manager
+)
+
 require (
+	github.com/forlifeproj/msf/config v0.0.0-20240501140345-228093f77c71
 	github.com/forlifeproj/msf/log v0.0.0-20240501140345-228093f77c71
-	github.com/forlifeproj/msf/server v0.0.0-20240501140345-228093f77c71
-	github.com/forlifeproj/protocol/gfriends/json v0.0.0-20240502075809-88d8be1fbcc8
+	github.com/forlifeproj/msf/server v0.0.0-20240519083342-feea7a0bf985
+	github.com/forlifeproj/protocol/gfriends/json/order_manager v0.0.0-20240518024237-bd6a416a583a
+	github.com/forlifeproj/protocol/gfriends/json/wx_pay v0.0.0-00010101000000-000000000000
+	github.com/wechatpay-apiv3/wechatpay-go v0.2.18
 	gorm.io/driver/mysql v1.5.6
 	gorm.io/gorm v1.25.10
 )
@@ -17,7 +28,6 @@ require (
 	github.com/apache/thrift v0.18.1 // indirect
 	github.com/armon/go-metrics v0.4.0 // indirect
 	github.com/fatih/color v1.16.0 // indirect
-	github.com/forlifeproj/msf/config v0.0.0-20240501004236-6fba10dc41c8 // indirect
 	github.com/forlifeproj/msf/consul v0.0.0-20240501004236-6fba10dc41c8 // indirect
 	github.com/go-echarts/go-echarts/v2 v2.3.2 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
